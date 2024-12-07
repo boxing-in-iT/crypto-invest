@@ -11,14 +11,13 @@ interface InvestmentTableRowProps {
 
 const InvestmentTableRow = (props: InvestmentTableRowProps) => {
   const { investment, index, onDelete } = props;
-  const { data } = useGetPriceByIdQuery(investment.id);
+  const { data, refetch } = useGetPriceByIdQuery(investment.id);
 
   const currentPrice = data?.market_data?.current_price?.usd || 0;
   const currentTotalValue = currentPrice * investment.amount;
   const profitOrLoss = currentTotalValue - investment.totalCost;
 
   useEffect(() => {
-    debugger;
     if (data) {
       props.setProfits((prev: any) => [...prev, profitOrLoss]);
     }
@@ -48,6 +47,9 @@ const InvestmentTableRow = (props: InvestmentTableRowProps) => {
           onClick={() => onDelete(investment.id)}
         >
           Удалить
+        </button>
+        <button style={{ marginLeft: "8px" }} onClick={() => refetch()}>
+          Обновить
         </button>
       </td>
     </tr>
