@@ -3,7 +3,10 @@ import { useState } from "react";
 import AddInvestmentForm from "./components/AddInvestmentForm";
 import InvestmentTable from "./components/InvestmentTable";
 import { useAppSelector } from "./hooks/useAppSelector";
-import { Modal } from "@mui/material";
+import { Button, Modal } from "@mui/material";
+import { exportToExcel, importFromExcel } from "./utils/forExcel";
+import { useAppDispatch } from "./hooks/useAppDispatch";
+import { setInvestments } from "./store/features/investmentSlice";
 
 const AppWrapper = styled.div`
   min-height: 100vh;
@@ -34,16 +37,44 @@ const AddInvestButton = styled.button`
 `;
 
 function App() {
+  const dispatch = useAppDispatch();
   const { investments } = useAppSelector((state) => state.investments);
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+
+  const handleExport = () => {
+    exportToExcel(investments);
+  };
+
+  const handleImport = async (e: any) => {
+    const file = e.target.files[0];
+    if (file) {
+      const importedData = await importFromExcel(file);
+      dispatch(setInvestments(importedData));
+    }
+  };
 
   return (
     <>
       <AppWrapper>
         <AppContent>
           <HeaderWrapper>
+            <div>
+              <Button onClick={handleExport}>Export to Excel</Button>
+              <Button>
+                <label htmlFor="import-file" style={{ cursor: "pointer" }}>
+                  Import from Excel
+                </label>
+                <input
+                  id="import-file"
+                  type="file"
+                  accept=".xlsx, .xls"
+                  style={{ display: "none" }}
+                  onChange={handleImport}
+                />
+              </Button>
+            </div>
             <AddInvestButton onClick={handleOpen}>
               Add Investment
             </AddInvestButton>

@@ -27,8 +27,14 @@ export const investmentsSlice = createSlice({
       // Сохраняем обновленные данные в localStorage
       localStorage.setItem("investments", JSON.stringify(state.investments));
     },
+    setInvestments: (state, action) => {
+      state.investments = action.payload;
+      // Сохраняем обновленные данные в localStorage
+      localStorage.setItem("investments", JSON.stringify(state.investments));
+    },
   },
 });
 
-export const { addInvestment, removeInvestment } = investmentsSlice.actions;
+export const { addInvestment, removeInvestment, setInvestments } =
+  investmentsSlice.actions;
 export default investmentsSlice.reducer;
