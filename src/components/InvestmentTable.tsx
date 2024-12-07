@@ -1,5 +1,5 @@
 import styled from "@emotion/styled";
-import React, { useState } from "react";
+import { useState } from "react";
 import { Investment } from "../data/interface";
 import InvestmentTableRow from "./InvestmentTableRow";
 import { useAppDispatch } from "../hooks/useAppDispatch";

@@ -1,4 +1,4 @@
-import React, { Dispatch, useEffect } from "react";
+import { Dispatch, useEffect } from "react";
 import { Investment } from "../data/interface";
 import { useGetPriceByIdQuery } from "../store/api/coinApi";
 
